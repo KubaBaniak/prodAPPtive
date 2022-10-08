@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QFileDialog, QPushButton, QTabWidget, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QFileDialog, QPushButton, QVBoxLayout
+from PyQt6.QtCore import Qt
 import random
 from pathlib import Path
 import sys
@@ -8,18 +9,54 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("ProdAPPtive")
-        self.setContentsMargins(50, 50, 50, 50)
+        self.setContentsMargins(40, 30, 40, 30)
+        self.setFixedSize(600, 400)
+        self.resize(600, 400)
+
         vbox = QVBoxLayout()
         self.setLayout(vbox)
 
         stylesheet = """
             QWidget {
-                background-color: "gray";
-                font: "cascasia code";
-                font-size: 20px;
+                background-color: qlineargradient(x1: 0, x2: 1, stop: 0 #414141, stop: 1 #353535);
+                font: cascasia code;
+                color: #f0f7f4;
+                margin: 5px;
+            }
+
+            QLabel {
+                font-size: 18px;
+                padding: 0 5px 0 5px;
+                background-color: transparent;
+            }
+
+            QLabel#header{
+                font-size: 28px;
+                font-weight: bold;
+            }
+            
+
+            QPushButton{
+                border-style: solid;
+                border-width: 2px;
+                border-radius: 10px;
+                border-color: #7e8d85;
+                background-color: #4a4a47;
+                font: bold 20px;
+                max-width: 250px;
+                height:35px;
+            }
+
+            QPushButton:hover{
+                background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b3bfb8, stop: 1 #a2e3c4);
+                color: #32322C;
+                font-size: 22px;
+            }
+
+            QPushButton:pressed {
+                border-style: inset;
             }
         """
-        self.resize(600, 400)
         self.setStyleSheet(stylesheet)
 
         widgets = self.create_widgets()
@@ -29,20 +66,22 @@ class Window(QWidget):
 
     def create_widgets(self):
         self.intro_label = QLabel("Welcome to ProdAPPtive", self)
-        # self.intro_label.setFont(QFont("Cascadia Code", 15))
-
-
         self.search_button = QPushButton("Search File", self)
         self.file_name_label = QLabel("File Name", self)
-
         self.block_button = QPushButton("Block File", self)
         self.unblock_button = QPushButton("Unblock File", self)
         self.info_label = QLabel("", self)
 
+        self.intro_label.setObjectName('header')
+        self.intro_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.file_name_label.setWordWrap(True)
+        self.info_label.setWordWrap(True)
+
+
+        [widget.adjustSize() for widget in [self.file_name_label, self.info_label]]
+
         self.search_button.clicked.connect(self.search_file)
-
         self.block_button.clicked.connect(self.block_file)
-
         self.unblock_button.clicked.connect(self.unblock_file)
 
         return [self.intro_label, self.search_button, self.file_name_label, self.block_button, self.unblock_button, self.info_label]
