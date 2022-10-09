@@ -1,3 +1,6 @@
 --- Validation if user picked any file, 
     and prevent from picking code itself
 
+--- recovery of file- save file data as well as key
+
+--- check if key is indeed in file, and if not - write or stop program
